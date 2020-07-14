@@ -1,0 +1,15 @@
+language: python
+
+python:
+    - "3.6"
+    - "3.7"
+    - "3.8"
+
+install:
+    - pip3 install poetry
+    - poetry install
+    
+
+script:
+    - poetry run pytest
+    - poetry run black --check polyjuice tests

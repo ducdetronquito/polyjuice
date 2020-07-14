@@ -1,0 +1,10 @@
+# Python artifcats
+__pycache__/
+*.pyc
+
+# Poetry
+polyjuice.egg-info/
+dist/
+
+# Tests
+*.sqlite3
