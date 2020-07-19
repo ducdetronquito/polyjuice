@@ -19,6 +19,7 @@ ProfessorTable = Table(
         # The 'django_related_model' option is required when the related model uses a table name
         # that does not match django's pattern <app_name>__<model_name>.
         django_related_model="houses.House",
+        nullable=False,
     ),
 )
 

@@ -15,24 +15,20 @@ ON_DELETE_MAP = {
 
 
 def to_foreign_key(table: Table, column: Column, options) -> models.ForeignKey:
-    kwargs = {}
-    if "django" in options:
-        kwargs.update(options["django"])
-
-    if "related_model" in kwargs:
-        related_model_path = kwargs.pop("related_model")
+    if "related_model" in options:
+        related_model_path = options.pop("related_model")
     else:
         foreign_key = list(column.foreign_keys)[0]
         related_table_name = foreign_key._table_key()
         related_model_path = related_table_name.replace("__", ".")
 
-    if "on_delete" not in kwargs:
+    if "on_delete" not in options:
         raise errors.MissingOnDeleteOption(table, column)
 
-    on_delete = kwargs["on_delete"]
+    on_delete = options["on_delete"]
     try:
-        kwargs["on_delete"] = ON_DELETE_MAP[on_delete]
+        options["on_delete"] = ON_DELETE_MAP[on_delete]
     except KeyError:
         raise errors.InvalidOnDeleteOption(table, column, on_delete)
 
-    return models.ForeignKey(related_model_path, **kwargs)
+    return models.ForeignKey(related_model_path, **options)

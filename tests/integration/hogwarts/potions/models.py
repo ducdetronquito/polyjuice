@@ -17,6 +17,7 @@ PotionTable = Table(
         ForeignKey(ProfessorTable.c.id),
         django_on_delete="CASCADE",
         django_related_name="invented_potions",
+        nullable=False,
     ),
 )
 

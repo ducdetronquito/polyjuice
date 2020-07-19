@@ -88,6 +88,30 @@ assert severus_snape.personal_potions.count() == 1
 ```
 
 
+## Work In Progress
+
+### Field options
+Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#field-options)
+
+- [x] null (via `nullable`) (Q: SQLAlchemy nullable default to True, Django null default to False; what do we choose ?)
+- [x] blank (via `django_blank`)
+- [ ] choices (via `django_choices`) (Q: Do we also enforce it at the database level ?)
+- [ ] db_column
+- [ ] db_index
+- [ ] db_tablespace
+- [ ] default (Q: Do we enforce it at database level of do we just pass it to Django ?)
+- [x] editable (via `django_editable`)
+- [x] error_messages (via `django_error_messages`)
+- [x] help_text (via `django_help_text`)
+- [ ] primary_key
+- [ ] unique
+- [ ] unique_for_date
+- [ ] unique_for_month
+- [ ] unique_for_year
+- [x] verbose_name (via `django_verbose_name`)
+- [x] validators (via `django_validators`)
+
+
 ## Requirements
 
 *Polyjuice* is currently built on top of SQLAlchemy 1.3 and Django 2.2, and requires Python 3.6.

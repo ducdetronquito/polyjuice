@@ -1,11 +1,10 @@
+from polyjuice import errors
+from sqlalchemy import Column, Table
 from sqlalchemy.dialects import registry
 from sqlalchemy.engine.default import DefaultDialect
 
 
-__all__ = ["extract"]
-
-
-# HACK: Allows SQLAlchemy column to accept custom attributes specific to the Django ORM.
+# Allows SQLAlchemy column to accept custom attributes specific to the Django ORM.
 #
 # Example:
 # Column('invented_by', Integer, ForeignKey("professors.id"), django_related_name="invented_potions")
@@ -20,14 +19,17 @@ class DjangoDialect(DefaultDialect):
 registry.register("django", __name__, "DjangoDialect")
 
 
-def from_column(column):
-    options = {}
-    if column.nullable:
-        options["null"] = True
+def from_column(table: Table, column: Column):
+    options = {"null": column.nullable}
 
     django_options = _get_django_specific_options(column)
-    if django_options:
-        options["django"] = django_options
+    if not django_options:
+        return options
+
+    if "null" in django_options:
+        raise errors.BadNullableFieldSyntax(table, column)
+
+    options.update(django_options)
 
     return options
 
