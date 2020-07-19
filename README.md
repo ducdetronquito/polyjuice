@@ -16,9 +16,10 @@ take advantage of all the goodness of Django integration and tooling when needed
 I haven't tried every use case yet, but I imagine it could suits many:
 
 - Use other database management tools (ex: migrations with [alembic](https://github.com/sqlalchemy/alembic))
-- Take advantage of the async world (ex: build RabbitMQ consummers with [aio-pika](https://github.com/mosquito/aio-pika))
+- Take advantage of the async world (ex: build RabbitMQ consummers with database access on top of [aio-pika](https://github.com/mosquito/aio-pika))
 - Build complex SQL queries with the SQLAlchemy API and execute them through the Django database connection
 - Transition to another web framework
+- [Automagically compile your codebase to Rust](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 - ¯\\_(ツ)_/¯
 
 
