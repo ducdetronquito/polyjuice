@@ -6,7 +6,7 @@ from typing import Tuple, Union
 
 
 def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
-    _options = options.from_column(column)
+    _options = options.from_column(table, column)
     column_name = column.name
     column_type = column.type
     if isinstance(column_type, Integer):
@@ -14,7 +14,7 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
     elif isinstance(column_type, String):
         field = _to_char_field(table, column, _options)
     else:
-        raise PolyjuiceError("Case not covered yet")
+        raise errors.PolyjuiceError("Case not covered yet")
     return (column_name, field)
 
 
