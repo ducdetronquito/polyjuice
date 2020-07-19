@@ -117,8 +117,8 @@ Cf: [Documentation]https://docs.djangoproject.com/en/2.2/ref/models/fields/#fiel
 
 
 - [x] AutoField
-- [ ] BigAutoField
-- [ ] BigIntegerField
+- [x] BigAutoField
+- [x] BigIntegerField
 - [ ] BinaryField
 - [ ] BooleanField
 - [x] CharField
