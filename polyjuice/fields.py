@@ -2,13 +2,15 @@ from django.db.models import (
     AutoField,
     BigAutoField,
     BigIntegerField,
+    BooleanField,
     CharField,
     Field,
     ForeignKey,
     IntegerField,
+    NullBooleanField,
 )
 from polyjuice import errors, options, related_fields
-from sqlalchemy.sql.sqltypes import BigInteger, Integer, String
+from sqlalchemy.sql.sqltypes import BigInteger, Boolean, Integer, String
 from sqlalchemy import Column, Table
 from typing import Tuple, Union
 
@@ -20,6 +22,8 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
 
     if isinstance(column_type, BigInteger):
         field = _to_big_integer_field(table, column, _options)
+    elif isinstance(column_type, Boolean):
+        field = _to_boolean_field(table, column, _options)
     elif isinstance(column_type, Integer):
         field = _to_integer_field(table, column, _options)
     elif isinstance(column_type, String):
@@ -29,7 +33,13 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
     return (column_name, field)
 
 
-IntegerBasedField = Union[AutoField, IntegerField, ForeignKey]
+def _to_boolean_field(
+    table: Table, column: Column, options
+) -> Union[BooleanField, NullBooleanField]:
+    if options["null"]:
+        return NullBooleanField(**options)
+    else:
+        return BooleanField(**options)
 
 
 def _to_integer_field(table: Table, column: Column, options) -> IntegerBasedField:

@@ -120,7 +120,7 @@ Cf: [Documentation]https://docs.djangoproject.com/en/2.2/ref/models/fields/#fiel
 - [x] BigAutoField
 - [x] BigIntegerField
 - [ ] BinaryField
-- [ ] BooleanField
+- [x] BooleanField
 - [x] CharField
 - [ ] DateField
 - [ ] DateTimeField
@@ -133,7 +133,7 @@ Cf: [Documentation]https://docs.djangoproject.com/en/2.2/ref/models/fields/#fiel
 - [ ] ImageField
 - [x] IntegerField
 - [ ] GenericIPAddressField
-- [ ] NullBooleanField
+- [x] NullBooleanField
 - [ ] PositiveIntegerField
 - [ ] PositiveSmallIntegerField
 - [ ] SlugField

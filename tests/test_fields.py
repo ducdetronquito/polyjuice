@@ -1,8 +1,8 @@
 from django.db import models
 from polyjuice import errors, fields
 import pytest
-from sqlalchemy import Column, ForeignKey, MetaData, Table
-from sqlalchemy.sql.sqltypes import BigInteger, Integer, String
+from sqlalchemy import Column, MetaData, Table
+from sqlalchemy.sql.sqltypes import BigInteger, Boolean, Integer, String
 
 metadata = MetaData()
 TestTable = Table("test_table", metadata)
@@ -40,6 +40,24 @@ def test_big_integer_field():
     _, django_field = fields.to_django_field(TestTable, column)
 
     assert isinstance(django_field, models.BigIntegerField)
+
+
+def test_boolean_field():
+    column = Column("is_a_wizard", Boolean, nullable=False)
+
+    _, django_field = fields.to_django_field(TestTable, column)
+
+    assert isinstance(django_field, models.BooleanField)
+    assert django_field.null is False
+
+
+def test_null_boolean_field():
+    column = Column("is_a_wizard", Boolean, nullable=True)
+
+    _, django_field = fields.to_django_field(TestTable, column)
+
+    assert isinstance(django_field, models.NullBooleanField)
+    assert django_field.null is True
 
 
 def test_integer_field():
