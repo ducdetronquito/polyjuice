@@ -42,7 +42,9 @@ def _to_boolean_field(
         return BooleanField(**options)
 
 
-def _to_integer_field(table: Table, column: Column, options) -> IntegerBasedField:
+def _to_integer_field(
+    table: Table, column: Column, options
+) -> Union[AutoField, IntegerField, ForeignKey]:
     if column.primary_key:
         return AutoField(
             auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
@@ -54,12 +56,9 @@ def _to_integer_field(table: Table, column: Column, options) -> IntegerBasedFiel
     return IntegerField(**options)
 
 
-BigIntegerBasedField = Union[AutoField, IntegerField]
-
-
 def _to_big_integer_field(
     table: Table, column: Column, options
-) -> BigIntegerBasedField:
+) -> Union[AutoField, IntegerField]:
     if column.primary_key:
         return BigAutoField(
             auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
