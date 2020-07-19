@@ -35,3 +35,13 @@ class MissingStringLength(PolyjuiceError):
             "Example: Column('name', String(50))"
         )
         super().__init__(message)
+
+
+class BadNullableFieldSyntax(PolyjuiceError):
+    def __init__(self, table: Table, column: Column) -> None:
+        message = (
+            f"Table `{table.name}` column `{column.name}`: \n"
+            "To define a NULLABLE SQLAlchemy column, use the argument `nullable` instead of the `django_null` option.\n"
+            "Example: Column('name', String(50), nullable=True)"
+        )
+        super().__init__(message)
