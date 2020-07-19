@@ -112,6 +112,37 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] verbose_name (via `django_verbose_name`)
 - [x] validators (via `django_validators`)
 
+### Field types
+Cf: [Documentation]https://docs.djangoproject.com/en/2.2/ref/models/fields/#field-types)
+
+
+- [x] AutoField
+- [ ] BigAutoField
+- [ ] BigIntegerField
+- [ ] BinaryField
+- [ ] BooleanField
+- [x] CharField
+- [ ] DateField
+- [ ] DateTimeField
+- [ ] DecimalField
+- [ ] DurationField
+- [ ] EmailField
+- [ ] FileField
+- [ ] FilePathField
+- [ ] FloatField
+- [ ] ImageField
+- [x] IntegerField
+- [ ] GenericIPAddressField
+- [ ] NullBooleanField
+- [ ] PositiveIntegerField
+- [ ] PositiveSmallIntegerField
+- [ ] SlugField
+- [ ] SmallIntegerField
+- [ ] TextField
+- [ ] TimeField
+- [ ] URLField
+- [ ] UUIDField
+
 
 ## Requirements
 
