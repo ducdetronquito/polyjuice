@@ -2,7 +2,7 @@ from django.db import models
 from polyjuice import errors, fields
 import pytest
 from sqlalchemy import Column, ForeignKey, MetaData, Table
-from sqlalchemy.sql.sqltypes import Integer, String
+from sqlalchemy.sql.sqltypes import BigInteger, Integer, String
 
 metadata = MetaData()
 TestTable = Table("test_table", metadata)
@@ -19,6 +19,27 @@ def test_auto_field():
     assert django_field.serialize is False
     assert django_field.verbose_name == "ID"
     assert name == "id"
+
+
+def test_big_auto_field():
+    column = Column("id", BigInteger, primary_key=True)
+
+    name, django_field = fields.to_django_field(TestTable, column)
+
+    assert isinstance(django_field, models.BigAutoField)
+    assert django_field.auto_created is True
+    assert django_field.primary_key is True
+    assert django_field.serialize is False
+    assert django_field.verbose_name == "ID"
+    assert name == "id"
+
+
+def test_big_integer_field():
+    column = Column("distance", BigInteger)
+
+    _, django_field = fields.to_django_field(TestTable, column)
+
+    assert isinstance(django_field, models.BigIntegerField)
 
 
 def test_integer_field():
