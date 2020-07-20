@@ -10,9 +10,18 @@ from django.db.models import (
     IntegerField,
     NullBooleanField,
     SmallIntegerField,
+    TextField,
 )
 from polyjuice import errors, options, related_fields
-from sqlalchemy.sql.sqltypes import BigInteger, Boolean, Float, Integer, SmallInteger, String
+from sqlalchemy.sql.sqltypes import (
+    BigInteger,
+    Boolean,
+    Float,
+    Integer,
+    SmallInteger,
+    String,
+    Text,
+)
 from sqlalchemy import Column, Table
 from typing import Tuple, Union
 
@@ -30,6 +39,8 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
         field = _to_boolean_field(table, column, _options)
     elif isinstance(column_type, Integer):
         field = _to_integer_field(table, column, _options)
+    elif isinstance(column_type, Text):
+        field = _to_text_field(table, column, _options)
     elif isinstance(column_type, String):
         field = _to_char_field(table, column, _options)
     elif isinstance(column_type, Float):
@@ -85,3 +96,7 @@ def _to_float_field(table: Table, column: Column, options) -> FloatField:
 
 def _to_small_integer_field(table: Table, column: Column, options) -> SmallIntegerField:
     return SmallIntegerField(**options)
+
+
+def _to_text_field(table: Table, column: Column, options) -> TextField:
+    return TextField(**options)
