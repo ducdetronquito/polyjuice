@@ -129,7 +129,7 @@ Cf: [Documentation]https://docs.djangoproject.com/en/2.2/ref/models/fields/#fiel
 - [ ] EmailField
 - [ ] FileField
 - [ ] FilePathField
-- [ ] FloatField
+- [x] FloatField
 - [ ] ImageField
 - [x] IntegerField
 - [ ] GenericIPAddressField

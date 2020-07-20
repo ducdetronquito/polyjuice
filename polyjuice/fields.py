@@ -5,12 +5,13 @@ from django.db.models import (
     BooleanField,
     CharField,
     Field,
+    FloatField,
     ForeignKey,
     IntegerField,
     NullBooleanField,
 )
 from polyjuice import errors, options, related_fields
-from sqlalchemy.sql.sqltypes import BigInteger, Boolean, Integer, String
+from sqlalchemy.sql.sqltypes import BigInteger, Boolean, Float, Integer, String
 from sqlalchemy import Column, Table
 from typing import Tuple, Union
 
@@ -28,6 +29,8 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
         field = _to_integer_field(table, column, _options)
     elif isinstance(column_type, String):
         field = _to_char_field(table, column, _options)
+    elif isinstance(column_type, Float):
+        field = _to_float_field(table, column, _options)
     else:
         raise errors.PolyjuiceError("Case not covered yet")
     return (column_name, field)
@@ -71,3 +74,7 @@ def _to_char_field(table: Table, column: Column, options) -> CharField:
     if max_length is None:
         raise errors.MissingStringLength(table, column)
     return CharField(max_length=column.type.length, **options)
+
+
+def _to_float_field(table: Table, column: Column, options) -> FloatField:
+    return FloatField(**options)
