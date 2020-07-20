@@ -137,7 +137,7 @@ Cf: [Documentation]https://docs.djangoproject.com/en/2.2/ref/models/fields/#fiel
 - [ ] PositiveIntegerField
 - [ ] PositiveSmallIntegerField
 - [ ] SlugField
-- [ ] SmallIntegerField
+- [x] SmallIntegerField
 - [ ] TextField
 - [ ] TimeField
 - [ ] URLField
