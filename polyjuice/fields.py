@@ -1,49 +1,28 @@
-from django.db.models import (
-    AutoField,
-    BigAutoField,
-    BigIntegerField,
-    BooleanField,
-    CharField,
-    Field,
-    FloatField,
-    ForeignKey,
-    IntegerField,
-    NullBooleanField,
-    SmallIntegerField,
-    TextField,
-)
+from django.db import models
 from polyjuice import errors, options, related_fields
-from sqlalchemy.sql.sqltypes import (
-    BigInteger,
-    Boolean,
-    Float,
-    Integer,
-    SmallInteger,
-    String,
-    Text,
-)
+from sqlalchemy.sql import sqltypes
 from sqlalchemy import Column, Table
 from typing import Tuple, Union
 
 
-def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
+def to_django_field(table: Table, column: Column) -> Tuple[str, models.Field]:
     _options = options.from_column(table, column)
     column_name = column.name
     column_type = column.type
 
-    if isinstance(column_type, SmallInteger):
+    if isinstance(column_type, sqltypes.SmallInteger):
         field = _to_small_integer_field(table, column, _options)
-    elif isinstance(column_type, BigInteger):
+    elif isinstance(column_type, sqltypes.BigInteger):
         field = _to_big_integer_field(table, column, _options)
-    elif isinstance(column_type, Boolean):
+    elif isinstance(column_type, sqltypes.Boolean):
         field = _to_boolean_field(table, column, _options)
-    elif isinstance(column_type, Integer):
+    elif isinstance(column_type, sqltypes.Integer):
         field = _to_integer_field(table, column, _options)
-    elif isinstance(column_type, Text):
+    elif isinstance(column_type, sqltypes.Text):
         field = _to_text_field(table, column, _options)
-    elif isinstance(column_type, String):
+    elif isinstance(column_type, sqltypes.String):
         field = _to_char_field(table, column, _options)
-    elif isinstance(column_type, Float):
+    elif isinstance(column_type, sqltypes.Float):
         field = _to_float_field(table, column, _options)
     else:
         raise errors.PolyjuiceError("Case not covered yet")
@@ -52,51 +31,53 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, Field]:
 
 def _to_boolean_field(
     table: Table, column: Column, options
-) -> Union[BooleanField, NullBooleanField]:
+) -> Union[models.BooleanField, models.NullBooleanField]:
     if options["null"]:
-        return NullBooleanField(**options)
+        return models.NullBooleanField(**options)
     else:
-        return BooleanField(**options)
+        return models.BooleanField(**options)
 
 
 def _to_integer_field(
     table: Table, column: Column, options
-) -> Union[AutoField, IntegerField, ForeignKey]:
+) -> Union[models.AutoField, models.IntegerField, models.ForeignKey]:
     if column.primary_key:
-        return AutoField(
+        return models.AutoField(
             auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
         )
 
     if column.foreign_keys:
         return related_fields.to_foreign_key(table, column, options)
 
-    return IntegerField(**options)
+    return models.IntegerField(**options)
 
 
 def _to_big_integer_field(
     table: Table, column: Column, options
-) -> Union[AutoField, IntegerField]:
+) -> Union[models.AutoField, models.IntegerField]:
     if column.primary_key:
-        return BigAutoField(
+        return models.BigAutoField(
             auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
         )
-    return BigIntegerField(**options)
+    return models.BigIntegerField(**options)
 
 
-def _to_char_field(table: Table, column: Column, options) -> CharField:
+def _to_char_field(table: Table, column: Column, options) -> models.CharField:
     max_length = column.type.length
     if max_length is None:
         raise errors.MissingStringLength(table, column)
-    return CharField(max_length=column.type.length, **options)
+    return models.CharField(max_length=column.type.length, **options)
 
 
-def _to_float_field(table: Table, column: Column, options) -> FloatField:
-    return FloatField(**options)
+def _to_float_field(table: Table, column: Column, options) -> models.FloatField:
+    return models.FloatField(**options)
 
 
-def _to_small_integer_field(table: Table, column: Column, options) -> SmallIntegerField:
-    return SmallIntegerField(**options)
+def _to_small_integer_field(
+    table: Table, column: Column, options
+) -> models.SmallIntegerField:
+    return models.SmallIntegerField(**options)
 
 
-def _to_text_field(table: Table, column: Column, options) -> TextField:
-    return TextField(**options)
+def _to_text_field(table: Table, column: Column, options) -> models.TextField:
+    return models.TextField(**options)

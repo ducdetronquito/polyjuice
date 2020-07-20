@@ -2,22 +2,15 @@ from django.db import models
 from polyjuice import errors, fields
 import pytest
 from sqlalchemy import Column, MetaData, Table
-from sqlalchemy.sql.sqltypes import (
-    BigInteger,
-    Boolean,
-    Float,
-    Integer,
-    SmallInteger,
-    String,
-    Text,
-)
+from sqlalchemy.sql import sqltypes
+
 
 metadata = MetaData()
 TestTable = Table("test_table", metadata)
 
 
 def test_auto_field():
-    column = Column("id", Integer, primary_key=True)
+    column = Column("id", sqltypes.Integer, primary_key=True)
 
     name, django_field = fields.to_django_field(TestTable, column)
 
@@ -30,7 +23,7 @@ def test_auto_field():
 
 
 def test_big_auto_field():
-    column = Column("id", BigInteger, primary_key=True)
+    column = Column("id", sqltypes.BigInteger, primary_key=True)
 
     name, django_field = fields.to_django_field(TestTable, column)
 
@@ -43,7 +36,7 @@ def test_big_auto_field():
 
 
 def test_big_integer_field():
-    column = Column("distance", BigInteger)
+    column = Column("distance", sqltypes.BigInteger)
 
     _, django_field = fields.to_django_field(TestTable, column)
 
@@ -51,7 +44,7 @@ def test_big_integer_field():
 
 
 def test_boolean_field():
-    column = Column("is_a_wizard", Boolean, nullable=False)
+    column = Column("is_a_wizard", sqltypes.Boolean, nullable=False)
 
     _, django_field = fields.to_django_field(TestTable, column)
 
@@ -60,7 +53,7 @@ def test_boolean_field():
 
 
 def test_null_boolean_field():
-    column = Column("is_a_wizard", Boolean, nullable=True)
+    column = Column("is_a_wizard", sqltypes.Boolean, nullable=True)
 
     _, django_field = fields.to_django_field(TestTable, column)
 
@@ -69,7 +62,7 @@ def test_null_boolean_field():
 
 
 def test_integer_field():
-    column = Column("age", Integer)
+    column = Column("age", sqltypes.Integer)
 
     name, django_field = fields.to_django_field(TestTable, column)
 
@@ -78,7 +71,7 @@ def test_integer_field():
 
 
 def test_float_field():
-    column = Column("size", Float)
+    column = Column("size", sqltypes.Float)
 
     _, django_field = fields.to_django_field(TestTable, column)
 
@@ -86,7 +79,7 @@ def test_float_field():
 
 
 def test_small_integer_field():
-    column = Column("age", SmallInteger)
+    column = Column("age", sqltypes.SmallInteger)
 
     _, django_field = fields.to_django_field(TestTable, column)
 
@@ -94,7 +87,7 @@ def test_small_integer_field():
 
 
 def test_text_field():
-    column = Column("book", Text)
+    column = Column("book", sqltypes.Text)
 
     _, django_field = fields.to_django_field(TestTable, column)
 
@@ -103,7 +96,7 @@ def test_text_field():
 
 class TestCharField:
     def test_success(self):
-        column = Column("name", String(50))
+        column = Column("name", sqltypes.String(50))
 
         name, django_field = fields.to_django_field(TestTable, column)
 
@@ -112,7 +105,7 @@ class TestCharField:
         assert name == "name"
 
     def test_fail_if_no_length_provided(self):
-        column = Column("name", String)
+        column = Column("name", sqltypes.String)
 
         with pytest.raises(errors.MissingStringLength) as err:
             fields.to_django_field(TestTable, column)
