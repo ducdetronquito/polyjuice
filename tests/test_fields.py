@@ -2,7 +2,7 @@ from django.db import models
 from polyjuice import errors, fields
 import pytest
 from sqlalchemy import Column, MetaData, Table
-from sqlalchemy.sql.sqltypes import BigInteger, Boolean, Integer, String
+from sqlalchemy.sql.sqltypes import BigInteger, Boolean, Float, Integer, String
 
 metadata = MetaData()
 TestTable = Table("test_table", metadata)
@@ -67,6 +67,14 @@ def test_integer_field():
 
     assert isinstance(django_field, models.IntegerField)
     assert name == "age"
+
+
+def test_float_field():
+    column = Column("size", Float)
+
+    _, django_field = fields.to_django_field(TestTable, column)
+
+    assert isinstance(django_field, models.FloatField)
 
 
 class TestCharField:
