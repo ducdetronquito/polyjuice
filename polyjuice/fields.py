@@ -7,9 +7,14 @@ from typing import Tuple, Union
 
 def to_django_field(table: Table, column: Column) -> Tuple[str, models.Field]:
     _options = options.from_column(table, column)
-    column_name = column.name
-    column_type = column.type
 
+    custom_field_name = _options.pop("field_name", None)
+    if custom_field_name:
+        column_name = custom_field_name
+    else:
+        column_name = column.name
+
+    column_type = column.type
     if isinstance(column_type, sqltypes.SmallInteger):
         field = _to_small_integer_field(table, column, _options)
     elif isinstance(column_type, sqltypes.BigInteger):
@@ -26,6 +31,7 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, models.Field]:
         field = _to_float_field(table, column, _options)
     else:
         raise errors.PolyjuiceError("Case not covered yet")
+
     return (column_name, field)
 
 

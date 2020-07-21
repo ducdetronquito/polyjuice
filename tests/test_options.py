@@ -78,6 +78,22 @@ def test_validator():
     assert django_field.validators[0] == validate_is_old_enough
 
 
+class TestDbColumn:
+    def test_success(self):
+        column = Column("age", Integer, django_field_name="my_age")
+
+        name, _ = fields.to_django_field(TestTable, column)
+
+        assert name == "my_age"
+
+    def test_fail_when_field_name_is_empty(self):
+        column = Column("age", Integer, django_field_name="")
+
+        name, _ = fields.to_django_field(TestTable, column)
+
+        assert name == "age"
+
+
 class TestNull:
     def test_null(self):
         column = Column("age", Integer, nullable=True)

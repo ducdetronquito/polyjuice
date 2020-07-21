@@ -97,7 +97,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] null (via `nullable`) (Q: SQLAlchemy nullable default to True, Django null default to False; what do we choose ?)
 - [x] blank (via `django_blank`)
 - [ ] choices (via `django_choices`) (Q: Do we also enforce it at the database level ?)
-- [ ] db_column
+- [x] db_column (via `django_field_name`)
 - [ ] db_index
 - [ ] db_tablespace
 - [ ] default (Q: Do we enforce it at database level of do we just pass it to Django ?)
