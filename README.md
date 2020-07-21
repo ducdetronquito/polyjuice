@@ -113,7 +113,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] validators (via `django_validators`)
 
 ### Field types
-Cf: [Documentation]https://docs.djangoproject.com/en/2.2/ref/models/fields/#field-types)
+Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#field-types)
 
 
 - [x] AutoField
