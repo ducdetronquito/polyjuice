@@ -1,7 +1,8 @@
 from django.db import models
 from polyjuice import errors, options, related_fields
+from sqlalchemy import Column, Table, types
+from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql import sqltypes
-from sqlalchemy import Column, Table
 from typing import Tuple, Union
 
 
@@ -29,6 +30,8 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, models.Field]:
         field = _to_char_field(table, column, _options)
     elif isinstance(column_type, sqltypes.Float):
         field = _to_float_field(table, column, _options)
+    elif isinstance(column_type, postgresql.UUID):
+        field = _to_uuid_field(table, column, _options)
     else:
         raise errors.PolyjuiceError("Case not covered yet")
 
@@ -87,3 +90,10 @@ def _to_small_integer_field(
 
 def _to_text_field(table: Table, column: Column, options) -> models.TextField:
     return models.TextField(**options)
+
+
+def _to_uuid_field(table: Table, column: Column, options) -> models.UUIDField:
+    if column.type.as_uuid is False:
+        raise errors.UuidColumnMissingArgument(table, column)
+
+    return models.UUIDField(**options)

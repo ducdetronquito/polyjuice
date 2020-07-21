@@ -141,7 +141,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] TextField
 - [ ] TimeField
 - [ ] URLField
-- [ ] UUIDField
+- [x] UUIDField
 
 
 ## Requirements

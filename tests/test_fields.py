@@ -2,6 +2,7 @@ from django.db import models
 from polyjuice import errors, fields
 import pytest
 from sqlalchemy import Column, MetaData, Table
+from sqlalchemy.dialects import postgresql
 from sqlalchemy.sql import sqltypes
 
 
@@ -92,6 +93,28 @@ def test_text_field():
     _, django_field = fields.to_django_field(TestTable, column)
 
     assert isinstance(django_field, models.TextField)
+
+
+class TestUuidField:
+    def test_success(self):
+        column = Column("my_uuid", postgresql.UUID(as_uuid=True))
+
+        _, django_field = fields.to_django_field(TestTable, column)
+
+        assert isinstance(django_field, models.UUIDField)
+
+    def test_fail_is_as_uuid_is_not_set(self):
+        column = Column("my_uuid", postgresql.UUID)
+
+        with pytest.raises(Exception) as err:
+            fields.to_django_field(TestTable, column)
+
+        assert err.value.args[0] == (
+            "Table `test_table` column `my_uuid`: \n"
+            "To define a UUID column, you must enable the conversion to python uuid objects.\n"
+            "Example: Column('my_uuid', UUID(as_uuid=True))\n"
+            "Cf: https://docs.sqlalchemy.org/en/13/dialects/postgresql.html#sqlalchemy.dialects.postgresql.UUID"
+        )
 
 
 class TestCharField:
