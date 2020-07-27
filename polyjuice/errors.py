@@ -56,3 +56,24 @@ class UuidColumnMissingArgument(PolyjuiceError):
             "Cf: https://docs.sqlalchemy.org/en/13/dialects/postgresql.html#sqlalchemy.dialects.postgresql.UUID"
         )
         super().__init__(message)
+
+
+class InvalidDecimalFieldArgument(PolyjuiceError):
+    def __init__(self, table: Table, column: Column) -> None:
+        message = (
+            f"Table `{table.name}` column `{column.name}`: \n"
+            "To define a Decimal column, the argument `asdecimal` must be kept unset or set to `True` "
+            "to ensure that values are returned as python Decimal objects.\n"
+            "Example: Column('fees', Numeric(precision=10, scale=5))\n"
+        )
+        super().__init__(message)
+
+
+class MissingDecimalFieldArgument(PolyjuiceError):
+    def __init__(self, table: Table, column: Column) -> None:
+        message = (
+            f"Table `{table.name}` column `{column.name}`: \n"
+            "To define a Decimal column, the argument `precision` and `scale` must be set.\n"
+            "Example: Column('fees', Numeric(precision=10, scale=5))\n"
+        )
+        super().__init__(message)

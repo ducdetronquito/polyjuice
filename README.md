@@ -112,9 +112,9 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] verbose_name (via `django_verbose_name`)
 - [x] validators (via `django_validators`)
 
+
 ### Field types
 Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#field-types)
-
 
 - [x] AutoField
 - [x] BigAutoField
@@ -124,7 +124,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] CharField
 - [ ] DateField
 - [ ] DateTimeField
-- [ ] DecimalField
+- [x] DecimalField
 - [ ] DurationField
 - [ ] EmailField
 - [ ] FileField

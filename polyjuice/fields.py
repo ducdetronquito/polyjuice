@@ -32,6 +32,8 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, models.Field]:
         field = _to_float_field(table, column, _options)
     elif isinstance(column_type, postgresql.UUID):
         field = _to_uuid_field(table, column, _options)
+    elif isinstance(column_type, sqltypes.Numeric):
+        field = _to_decimal_field(table, column, _options)
     else:
         raise errors.PolyjuiceError("Case not covered yet")
 
@@ -97,3 +99,15 @@ def _to_uuid_field(table: Table, column: Column, options) -> models.UUIDField:
         raise errors.UuidColumnMissingArgument(table, column)
 
     return models.UUIDField(**options)
+
+
+def _to_decimal_field(table: Table, column: Column, options) -> models.DecimalField:
+    precision = column.type.precision
+    scale = column.type.scale
+    if not (isinstance(precision, int) and isinstance(scale, int)):
+        raise errors.MissingDecimalFieldArgument(table, column)
+
+    if column.type.asdecimal is False:
+        raise errors.InvalidDecimalFieldArgument(table, column)
+
+    return models.DecimalField(max_digits=precision, decimal_places=scale, **options)
