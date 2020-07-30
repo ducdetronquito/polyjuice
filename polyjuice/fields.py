@@ -34,6 +34,8 @@ def to_django_field(table: Table, column: Column) -> Tuple[str, models.Field]:
         field = _to_uuid_field(table, column, _options)
     elif isinstance(column_type, sqltypes.Numeric):
         field = _to_decimal_field(table, column, _options)
+    elif isinstance(column_type, sqltypes.Date):
+        field = _to_date_field(table, column, _options)
     else:
         raise errors.PolyjuiceError("Case not covered yet")
 
@@ -111,3 +113,7 @@ def _to_decimal_field(table: Table, column: Column, options) -> models.DecimalFi
         raise errors.InvalidDecimalFieldArgument(table, column)
 
     return models.DecimalField(max_digits=precision, decimal_places=scale, **options)
+
+
+def _to_date_field(table: Table, column: Column, options) -> models.DateField:
+    return models.DateField(**options)

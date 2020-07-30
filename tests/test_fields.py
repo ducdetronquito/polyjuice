@@ -176,3 +176,15 @@ class TestDecimalField:
             "To define a Decimal column, the argument `precision` and `scale` must be set.\n"
             "Example: Column('fees', Numeric(precision=10, scale=5))\n"
         )
+
+
+def test_date_field():
+    column = Column(
+        "created_at", sqltypes.Date, django_auto_now=True, django_auto_now_add=True
+    )
+
+    _, django_field = fields.to_django_field(TestTable, column)
+
+    assert isinstance(django_field, models.DateField)
+    assert django_field.auto_now is True
+    assert django_field.auto_now_add is True

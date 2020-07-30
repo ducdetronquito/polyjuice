@@ -122,7 +122,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [ ] BinaryField
 - [x] BooleanField
 - [x] CharField
-- [ ] DateField
+- [x] DateField (Django options `auto_now` and `auto_now_add` are not enforced at the database level)
 - [ ] DateTimeField
 - [x] DecimalField
 - [ ] DurationField
