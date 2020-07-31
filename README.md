@@ -105,7 +105,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] error_messages (via `django_error_messages`)
 - [x] help_text (via `django_help_text`)
 - [ ] primary_key
-- [ ] unique
+- [x] unique
 - [ ] unique_for_date
 - [ ] unique_for_month
 - [ ] unique_for_year

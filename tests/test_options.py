@@ -120,3 +120,19 @@ class TestNull:
             "To define a NULLABLE SQLAlchemy column, use the argument `nullable` instead of the `django_null` option.\n"
             "Example: Column('name', String(50), nullable=True)"
         )
+
+
+class TestUnique:
+    def test_success(self):
+        column = Column("id", Integer, unique=True)
+
+        _, django_field = fields.to_django_field(TestTable, column)
+
+        assert django_field.unique is True
+
+    def test_disabled_by_default(self):
+        column = Column("id", Integer)
+
+        _, django_field = fields.to_django_field(TestTable, column)
+
+        assert django_field.unique is False

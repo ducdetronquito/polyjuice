@@ -20,7 +20,10 @@ registry.register("django", __name__, "DjangoDialect")
 
 
 def from_column(table: Table, column: Column):
-    options = {"null": column.nullable}
+    options = {
+        "null": column.nullable,
+        "unique": column.unique,
+    }
 
     django_options = _get_django_specific_options(column)
     if not django_options:
