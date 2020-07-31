@@ -21,6 +21,7 @@ registry.register("django", __name__, "DjangoDialect")
 
 def from_column(table: Table, column: Column):
     options = {
+        "default": column.default,
         "null": column.nullable,
         "unique": column.unique,
     }

@@ -100,7 +100,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [x] db_column (via `django_field_name`)
 - [ ] db_index
 - [ ] db_tablespace
-- [ ] default (Q: Do we enforce it at database level of do we just pass it to Django ?)
+- [x] default
 - [x] editable (via `django_editable`)
 - [x] error_messages (via `django_error_messages`)
 - [x] help_text (via `django_help_text`)

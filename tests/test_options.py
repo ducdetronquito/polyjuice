@@ -1,7 +1,8 @@
+from datetime import date
 from polyjuice import errors, fields
 import pytest
 from sqlalchemy import Column, MetaData, Table
-from sqlalchemy.sql.sqltypes import Integer
+from sqlalchemy.sql.sqltypes import Integer, Date
 
 
 metadata = MetaData()
@@ -136,3 +137,25 @@ class TestUnique:
         _, django_field = fields.to_django_field(TestTable, column)
 
         assert django_field.unique is False
+
+
+class TestDefault:
+    def test_scalar_value(self):
+        column = Column("age", Integer, default=42)
+
+        _, django_field = fields.to_django_field(TestTable, column)
+
+        assert django_field.default.arg == 42
+        assert django_field.default.is_scalar is True
+        assert django_field.default.is_server_default is False
+        assert django_field.default.for_update is False
+
+    def test_python_callable(self):
+        column = Column("last_updated", Date, default=date.today)
+
+        _, django_field = fields.to_django_field(TestTable, column)
+
+        assert django_field.default.arg.__wrapped__ == date.today
+        assert django_field.default.is_callable is True
+        assert django_field.default.is_server_default is False
+        assert django_field.default.for_update is False
