@@ -22,12 +22,15 @@ registry.register("django", __name__, "DjangoDialect")
 def from_column(table: Table, column: Column):
     options = {
         "null": column.nullable,
-        "unique": column.unique,
     }
 
     default = column.default
     if default is not None:
         options["default"] = default
+
+    unique = column.unique
+    if unique is not None:
+        options["unique"] = unique
 
     django_options = _get_django_specific_options(column)
     if not django_options:

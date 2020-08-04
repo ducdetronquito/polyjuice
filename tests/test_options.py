@@ -139,6 +139,13 @@ class TestUnique:
 
         assert django_field.unique is False
 
+    def test_does_provide_unique_by_defaut(self):
+        column = Column("id", Integer)
+
+        _, django_field = fields.to_django_field(TestTable, column)
+
+        assert django_field.unique is False
+
 
 class TestDefault:
     def test_scalar_value(self):
