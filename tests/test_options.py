@@ -1,4 +1,5 @@
 from datetime import date
+from django.db import models
 from polyjuice import errors, fields
 import pytest
 from sqlalchemy import Column, MetaData, Table
@@ -159,3 +160,10 @@ class TestDefault:
         assert django_field.default.is_callable is True
         assert django_field.default.is_server_default is False
         assert django_field.default.for_update is False
+
+    def test_does_provide_default_by_defaut(self):
+        column = Column("age", Integer)
+
+        _, django_field = fields.to_django_field(TestTable, column)
+
+        assert django_field.default == models.fields.NOT_PROVIDED
