@@ -11,6 +11,9 @@ def build_meta_class(table: Table, django_model_placeholder):
 
     user_defined_meta = getattr(django_model_placeholder, "Meta", None)
 
+    if user_defined_meta and hasattr(user_defined_meta, "abstract") and user_defined_meta.abstract:
+        raise PolyjuiceError("You cannot mimic an abstract model.")
+
     if user_defined_meta and hasattr(user_defined_meta, "db_table"):
         raise PolyjuiceError("You cannot override Meta.db_table field.")
 

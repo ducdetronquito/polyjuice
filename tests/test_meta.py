@@ -105,3 +105,13 @@ class TestBuildMetaClass:
             meta.build_meta_class(self.table, ModelPlaceHolder)
 
         assert err.value.args[0] == "You cannot override Meta.db_table field."
+
+    def test_fail_when_model_is_abstract(self):
+        class ModelPlaceHolder:
+            class Meta:
+                abstract = True
+
+        with pytest.raises(errors.PolyjuiceError) as err:
+            meta.build_meta_class(self.table, ModelPlaceHolder)
+
+        assert err.value.args[0] == "You cannot mimic an abstract model."

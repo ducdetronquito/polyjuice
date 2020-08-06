@@ -158,7 +158,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 ### Meta options
 Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/options/)
 
-- [ ] abstract
+- [x] abstract (Forbidden to override)
 - [ ] app_label
 - [ ] base_manager_name
 - [x] db_table (Forbidden to override)
