@@ -5,6 +5,18 @@ SQLAlchemy tables disguised as Django models.
 [![Build Status](https://api.travis-ci.org/ducdetronquito/polyjuice.svg?branch=master)](https://travis-ci.org/ducdetronquito/polyjuice) [![License](https://img.shields.io/badge/license-public%20domain-ff69b4.svg)](https://github.com/ducdetronquito/polyjuice#license)
 
 
+## Outline
+
+1. [Usage](https://github.com/ducdetronquito/polyjuice#usage)
+2. [Example](https://github.com/ducdetronquito/polyjuice#example)
+3. [Work In Progress](https://github.com/ducdetronquito/polyjuice#work-in-progress)
+    - [Field options](https://github.com/ducdetronquito/polyjuice#field-options)
+    - [Field types](https://github.com/ducdetronquito/polyjuice#field-types)
+    - [Meta options](https://github.com/ducdetronquito/polyjuice#meta-options)
+4. [Requirements](https://github.com/ducdetronquito/polyjuice#requirements)
+5. [License](https://github.com/ducdetronquito/polyjuice#license)
+
+
 ## Usage
 
 *Polyjuice* allows you to define your database tables with [SQLAlchemy Core](https://docs.sqlalchemy.org/en/13/core/) and use them
