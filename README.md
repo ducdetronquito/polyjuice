@@ -160,27 +160,27 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/options/)
 
 - [x] abstract (Forbidden to override)
 - [ ] app_label
-- [ ] base_manager_name
+- [x] base_manager_name
 - [x] db_table (Forbidden to override)
 - [ ] db_tablespace
-- [ ] default_manager_name
+- [x] default_manager_name
 - [ ] default_related_name
-- [ ] get_latest_by
+- [x] get_latest_by
 - [ ] managed
-- [ ] order_with_respect_to
-- [ ] ordering
-- [ ] permissions
-- [ ] default_permissions
+- [x] order_with_respect_to
+- [x] ordering
+- [x] permissions
+- [x] default_permissions
 - [ ] proxy
 - [ ] required_db_features
 - [ ] required_db_vendor
-- [ ] select_on_save
+- [x] select_on_save
 - [x] indexes
 - [ ] unique_together
 - [ ] index_together
 - [ ] constraints
-- [ ] verbose_name
-- [ ] verbose_name_plural
+- [x] verbose_name
+- [x] verbose_name_plural
 
 
 ## Requirements
