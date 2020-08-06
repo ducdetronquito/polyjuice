@@ -72,6 +72,18 @@ class TestBuildMetaClass:
 
         self.model_placeholder = ModelPlaceHolder
 
+    def test_db_table(self):
+        Meta = meta.build_meta_class(self.table, self.model_placeholder)
+
+        assert Meta.db_table == "test_table"
+
+    def test_indexes(self):
+        Index("my_super_index", self.table.c.name)
+
+        Meta = meta.build_meta_class(self.table, self.model_placeholder)
+
+        assert len(Meta.indexes) == 1
+
     def test_fail_when_indexes_field_is_overriden(self):
         class ModelPlaceHolder:
             class Meta:
@@ -84,14 +96,12 @@ class TestBuildMetaClass:
 
         assert err.value.args[0] == "You cannot override Meta.indexes field."
 
-    def test_db_table(self):
-        Meta = meta.build_meta_class(self.table, self.model_placeholder)
+    def test_fail_when_db_table_field_is_overriden(self):
+        class ModelPlaceHolder:
+            class Meta:
+                db_table = "my_custom_name"
 
-        assert Meta.db_table == "test_table"
+        with pytest.raises(errors.PolyjuiceError) as err:
+            meta.build_meta_class(self.table, ModelPlaceHolder)
 
-    def test_indexes(self):
-        Index("my_super_index", self.table.c.name)
-
-        Meta = meta.build_meta_class(self.table, self.model_placeholder)
-
-        assert len(Meta.indexes) == 1
+        assert err.value.args[0] == "You cannot override Meta.db_table field."

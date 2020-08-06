@@ -161,7 +161,7 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/options/)
 - [ ] abstract
 - [ ] app_label
 - [ ] base_manager_name
-- [ ] db_table
+- [x] db_table (Forbidden to override)
 - [ ] db_tablespace
 - [ ] default_manager_name
 - [ ] default_related_name
