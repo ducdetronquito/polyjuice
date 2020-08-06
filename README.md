@@ -143,6 +143,33 @@ Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/fields/#fie
 - [ ] URLField
 - [x] UUIDField
 
+### Meta options
+Cf: [Documentation](https://docs.djangoproject.com/en/2.2/ref/models/options/)
+
+- [ ] abstract
+- [ ] app_label
+- [ ] base_manager_name
+- [ ] db_table
+- [ ] db_tablespace
+- [ ] default_manager_name
+- [ ] default_related_name
+- [ ] get_latest_by
+- [ ] managed
+- [ ] order_with_respect_to
+- [ ] ordering
+- [ ] permissions
+- [ ] default_permissions
+- [ ] proxy
+- [ ] required_db_features
+- [ ] required_db_vendor
+- [ ] select_on_save
+- [x] indexes
+- [ ] unique_together
+- [ ] index_together
+- [ ] constraints
+- [ ] verbose_name
+- [ ] verbose_name_plural
+
 
 ## Requirements
 

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Table
+from sqlalchemy import Column, Index, Table
 
 
 class PolyjuiceError(Exception):
@@ -75,5 +75,27 @@ class MissingDecimalFieldArgument(PolyjuiceError):
             f"Table `{table.name}` column `{column.name}`: \n"
             "To define a Decimal column, the argument `precision` and `scale` must be set.\n"
             "Example: Column('fees', Numeric(precision=10, scale=5))\n"
+        )
+        super().__init__(message)
+
+
+class InvalidIndexDefinition(PolyjuiceError):
+    def __init__(self, table: Table, index: Index) -> None:
+        message = (
+            f"Table `{table.name}` index `{index.name}`: \n"
+            "Invalid index definition.\n"
+            "Example: Index('some_index', some_table.c.some_column)\n"
+            "Cf: https://docs.sqlalchemy.org/en/13/core/constraints.html#indexes"
+        )
+        super().__init__(message)
+
+
+class UnsupportedFunctionalIndex(PolyjuiceError):
+    def __init__(self, table: Table, index: Index) -> None:
+        message = (
+            f"Table `{table.name}` index `{index.name}`: \n"
+            "Only descending index is supported yet.\n"
+            "Example: Index('some_index', some_table.c.some_column.desc())\n"
+            "Cf: https://docs.sqlalchemy.org/en/13/core/constraints.html#functional-indexes"
         )
         super().__init__(message)

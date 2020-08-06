@@ -1,6 +1,8 @@
 from django.db import models
-import inspect
+from .errors import PolyjuiceError
 from .fields import to_django_field
+import inspect
+from .meta import build_meta_class
 from sqlalchemy import Column, Table
 from typing import Dict, List
 
@@ -9,8 +11,7 @@ def mimic(sqlalchemy_table):
     def wrapper(django_model):
         model_name = django_model.__name__
 
-        class Meta:
-            db_table = sqlalchemy_table.name
+        Meta = build_meta_class(sqlalchemy_table, django_model)
 
         attributes = {
             "__module__": django_model.__module__,
