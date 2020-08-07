@@ -99,3 +99,14 @@ class UnsupportedFunctionalIndex(PolyjuiceError):
             "Cf: https://docs.sqlalchemy.org/en/13/core/constraints.html#functional-indexes"
         )
         super().__init__(message)
+
+
+class MissingTableDefinition(PolyjuiceError):
+    def __init__(self, django_model_placeholder) -> None:
+        message = (
+            f"Model `{django_model_placeholder.__name__}`: \n"
+            "A model decorated with `polyjuice.model` must define a `__table__` attribute "
+            "which corresponds to its table schema.\n"
+            "Cf: https://github.com/ducdetronquito/polyjuice#example"
+        )
+        super().__init__(message)

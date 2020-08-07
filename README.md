@@ -35,59 +35,46 @@ I haven't tried every use case yet, but I imagine it could suits many:
 - ¯\\_(ツ)_/¯
 
 
-### Example
-
-**In an python package called `my_tables.py`**
+## Example
 
 ```python
-"""Here, define your table schemas with the SQLAlchemy core API."""
 import polyjuice
 from sqlalchemy import Column, ForeignKey, Integer, MetaData, String, Table
+
 
 metadata = MetaData()
 
 
-ProfessorTable = Table(
-    "hogwarts__professor",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("name", String(30), nullable=False)
-)
-
-
-PotionTable = Table(
-    'hogwarts__potion',
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("name", String(100), nullable=False),
-    Column(
-        'made_by',
-        Integer,
-        ForeignKey(ProfessorTable.c.id),
-        django_on_delete="CASCADE",
-        django_related_name="personal_potions"
-    )
-)
-```
-
-**In your Django project**
-
-```python
-from my_tables import PotionTable, ProfessorTable
-import polyjuice
-
-
-@polyjuice.mimic(ProfessorTable)
+@polyjuice.model
 class Professor:
-    """The Polyjuice decorator will turn this class into a legit Django model."""
+
+    __table__ = Table(
+        "hogwarts__professor",
+        metadata,
+        Column("id", Integer, primary_key=True),
+        Column("name", String(30), nullable=False)
+    )
 
     def welcome(self):
         print(f"Welcome to my class, I am Pr. {self.name} 🧙‍♂️")
 
 
-@polyjuice.mimic(PotionTable)
+@polyjuice.model
 class Potion:
-    """This class too"""
+
+    __table__ = Table(
+        'hogwarts__potion',
+        metadata,
+        Column("id", Integer, primary_key=True),
+        Column("name", String(100), nullable=False),
+        Column(
+            'made_by',
+            Integer,
+            ForeignKey(Professor.__table__.c.id),
+            django_on_delete="CASCADE",
+            django_related_name="personal_potions"
+        )
+    )
 
     def boil(self):
         print(f"*The {self.name} potion is blurping* ⚗️")
@@ -95,7 +82,7 @@ class Potion:
 
 # And you are ready to go !
 severus_snape = Professor.objects.create(name="Severus Snape")
-veritaserum = Professor.objects.create(name="Veritaserum", made_by=severus_snape)
+veritaserum = Potion.objects.create(name="Veritaserum", made_by=severus_snape)
 
 assert severus_snape.personal_potions.count() == 1
 ```

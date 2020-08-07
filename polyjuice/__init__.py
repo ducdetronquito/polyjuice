@@ -1,5 +1,5 @@
 from django.db import models
-from .errors import PolyjuiceError
+from .errors import MissingTableDefinition
 from .fields import to_django_field
 import inspect
 from .meta import build_meta_class
@@ -7,29 +7,32 @@ from sqlalchemy import Column, Table
 from typing import Dict, List
 
 
-def mimic(sqlalchemy_table):
-    def wrapper(django_model):
-        model_name = django_model.__name__
+def model(django_model_placeholder):
+    model_name = django_model_placeholder.__name__
+    module = django_model_placeholder.__module__
 
-        user_defined_meta = getattr(django_model_placeholder, "Meta", None)
-        Meta = build_meta_class(sqlalchemy_table, user_defined_meta)
+    sqlalchemy_table = getattr(django_model_placeholder, "__table__", None)
+    if not isinstance(sqlalchemy_table, Table):
+        raise MissingTableDefinition(django_model_placeholder)
 
-        attributes = {
-            "__module__": django_model.__module__,
-            "Meta": Meta,
-        }
+    user_defined_meta = getattr(django_model_placeholder, "Meta", None)
+    Meta = build_meta_class(sqlalchemy_table, user_defined_meta)
 
-        _fields = _from_table(sqlalchemy_table)
-        attributes.update(_fields)
+    attributes = {
+        "__module__": module,
+        "__table__": sqlalchemy_table,
+        "Meta": Meta,
+    }
 
-        methods = _get_methods(django_model)
-        attributes.update(methods)
+    _fields = _from_table(sqlalchemy_table)
+    attributes.update(_fields)
 
-        model = type(model_name, (models.Model,), attributes)
+    methods = _get_methods(django_model_placeholder)
+    attributes.update(methods)
 
-        return model
+    django_model = type(model_name, (models.Model,), attributes)
 
-    return wrapper
+    return django_model
 
 
 def _from_table(table: Table) -> Dict[str, models.Field]:
