@@ -5,13 +5,15 @@ from sqlalchemy.sql.expression import UnaryExpression
 from typing import List
 
 
-def build_meta_class(table: Table, django_model_placeholder):
+def build_meta_class(table: Table, user_defined_meta=None):
     class Meta:
         db_table = table.name
 
-    user_defined_meta = getattr(django_model_placeholder, "Meta", None)
+    Meta.indexes = get_indexes(table)
+    if user_defined_meta is None:
+        return Meta
 
-    if user_defined_meta and hasattr(user_defined_meta, "abstract") and user_defined_meta.abstract:
+    if hasattr(user_defined_meta, "abstract") and user_defined_meta.abstract:
         raise PolyjuiceError("You cannot mimic an abstract model.")
 
     if user_defined_meta and hasattr(user_defined_meta, "db_table"):
@@ -19,8 +21,6 @@ def build_meta_class(table: Table, django_model_placeholder):
 
     if user_defined_meta and hasattr(user_defined_meta, "indexes"):
         raise PolyjuiceError("You cannot override Meta.indexes field.")
-
-    Meta.indexes = get_indexes(table)
 
     return Meta
 

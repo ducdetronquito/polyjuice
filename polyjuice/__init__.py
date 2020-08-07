@@ -11,7 +11,8 @@ def mimic(sqlalchemy_table):
     def wrapper(django_model):
         model_name = django_model.__name__
 
-        Meta = build_meta_class(sqlalchemy_table, django_model)
+        user_defined_meta = getattr(django_model_placeholder, "Meta", None)
+        Meta = build_meta_class(sqlalchemy_table, user_defined_meta)
 
         attributes = {
             "__module__": django_model.__module__,

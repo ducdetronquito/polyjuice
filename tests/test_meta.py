@@ -67,51 +67,48 @@ class TestBuildMetaClass:
         metadata = MetaData()
         self.table = Table("test_table", metadata, Column("name", String(50)),)
 
-        class ModelPlaceHolder:
+        class Meta:
             pass
 
-        self.model_placeholder = ModelPlaceHolder
+        self.user_defined_meta = Meta
 
     def test_db_table(self):
-        Meta = meta.build_meta_class(self.table, self.model_placeholder)
+        Meta = meta.build_meta_class(self.table, self.user_defined_meta)
 
         assert Meta.db_table == "test_table"
 
     def test_indexes(self):
         Index("my_super_index", self.table.c.name)
 
-        Meta = meta.build_meta_class(self.table, self.model_placeholder)
+        Meta = meta.build_meta_class(self.table, self.user_defined_meta)
 
         assert len(Meta.indexes) == 1
 
     def test_fail_when_indexes_field_is_overriden(self):
-        class ModelPlaceHolder:
-            class Meta:
-                indexes = [models.Index(name="bad_index", fields=["some_field"])]
+        class Meta:
+            indexes = [models.Index(name="bad_index", fields=["some_field"])]
 
         Index("my_super_index", self.table.c.name)
 
         with pytest.raises(errors.PolyjuiceError) as err:
-            meta.build_meta_class(self.table, ModelPlaceHolder)
+            meta.build_meta_class(self.table, Meta)
 
         assert err.value.args[0] == "You cannot override Meta.indexes field."
 
     def test_fail_when_db_table_field_is_overriden(self):
-        class ModelPlaceHolder:
-            class Meta:
-                db_table = "my_custom_name"
+        class Meta:
+            db_table = "my_custom_name"
 
         with pytest.raises(errors.PolyjuiceError) as err:
-            meta.build_meta_class(self.table, ModelPlaceHolder)
+            meta.build_meta_class(self.table, Meta)
 
         assert err.value.args[0] == "You cannot override Meta.db_table field."
 
     def test_fail_when_model_is_abstract(self):
-        class ModelPlaceHolder:
-            class Meta:
-                abstract = True
+        class Meta:
+            abstract = True
 
         with pytest.raises(errors.PolyjuiceError) as err:
-            meta.build_meta_class(self.table, ModelPlaceHolder)
+            meta.build_meta_class(self.table, Meta)
 
         assert err.value.args[0] == "You cannot mimic an abstract model."
